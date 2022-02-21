@@ -4,8 +4,8 @@ fn pig_latin(english: &str) -> String {
     let mut output = String::new();
     for word in english.to_lowercase().split_whitespace() {
         let (first_letter, rest_of_word) = word.split_at(1);
-        match String::from("aeiou").contains(&first_letter) {
-            true => output.push_str(&format!("{}{}-hay ", first_letter, rest_of_word)),
+        match b"aeiou".contains(&first_letter.as_bytes()[0]) {
+            true => output.push_str(&format!("{}-hay ", english)),
             false => output.push_str(&format!("{}-{}ay ", rest_of_word, first_letter)),
         }
     }

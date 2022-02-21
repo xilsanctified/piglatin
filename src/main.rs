@@ -1,28 +1,21 @@
-fn swap(word: &str) -> String {
-    match word.to_lowercase().chars().next() {
-        Some('a' | 'e' | 'i' | 'o' | 'u') => String::from(word.to_string()) + "-hay ",
-        _ => consonant(word),
+use std::io;
+
+fn pig_latin(english: &str) -> String {
+    let mut output = String::new();
+    for word in english.to_lowercase().split_whitespace() {
+        let (first_letter, rest_of_word) = word.split_at(1);
+        match String::from("aeiou").contains(&first_letter) {
+            true => output.push_str(&format!("{}{}-hay ", first_letter, rest_of_word)),
+            false => output.push_str(&format!("{}-{}ay ", rest_of_word, first_letter)),
+        }
     }
+    output
 }
 
-fn pig_latin(s: &str) -> String {
-    if s.is_empty() {
-        return String::from("Empty string!");
-    }
-    let mut translation = String::new();
-    for word in s.split_whitespace() {
-        translation.push_str(&swap(word));
-    }
-    translation
-}
-
-fn consonant(s: &str) -> String {
-    let (first, last) = s.split_at(s.len() - s.len() + 1);
-    let formatted = format!("{}{}-ay ", last.to_lowercase(), first.to_lowercase());
-    formatted
-}
 fn main() {
-    let s = "This is a test of the emergency broadcast system";
-    println!("Original:  {}", s);
-    println!("Pig Latin: {}", pig_latin(s));
+    println!("English to translate: ");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed.");
+
+    println!("Pig Latin: {}", pig_latin(&input));
 }
